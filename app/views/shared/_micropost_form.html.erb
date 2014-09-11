@@ -1,7 +1,30 @@
 <%= form_for(@micropost) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
-  <div class="field">
-    <%= f.text_area :content, placeholder: "Compose new micropost..." %>
-  </div>
-  <%= f.submit "Post", class: "btn btn-large btn-primary" %>
+
+	  <div class="field">
+	    <%= f.text_area :content, placeholder: "Compose new micropost..." %>
+	    <em id="count"></em>
+	  </div>
+	  <%= f.submit "Post", class: "btn btn-large btn-primary" %>
+	    <%= javascript_tag do %>
+	    maxCharacters = 140;
+
+		$('#count').text(maxCharacters);
+
+		$('textarea').bind('keyup keydown', function() {
+		    var count = $('#count');
+		    var characters = $(this).val().length;
+
+		    if (characters > maxCharacters) {
+		        count.addClass('over');
+		        count.text(0);
+		    } else {
+		        count.removeClass('over');
+		        count.text(maxCharacters - characters);
+		    }
+
+		});
+		<% end %>
+
+
 <% end %>
